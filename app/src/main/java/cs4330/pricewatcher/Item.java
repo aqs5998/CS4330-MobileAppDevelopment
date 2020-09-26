@@ -21,7 +21,6 @@ public class Item {
     public double getPercentChange(){
         Log.d("Item", "Percent change is now: "+Math.round((this.currentPrice/this.initialPrice)));
         return Math.round((this.currentPrice/this.initialPrice)*100) - 100;
-
     }
 
     public void setUrl(String url) { this.url = url; }

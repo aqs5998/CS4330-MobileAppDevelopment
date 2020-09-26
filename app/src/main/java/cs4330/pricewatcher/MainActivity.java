@@ -2,6 +2,8 @@ package cs4330.pricewatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         item.setName("Test Item");
         item.setInitialPrice(5.0);
         item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
-        item.setUrl("https://testurl.com/testItem");
+        item.setUrl("https://www.walmart.com/ip/Asus-VivoBook-14-FHD-Thin-and-Light-Laptop-AMD-Ryzen-5-3500U-Processor-8GB-RAM-256GB-SSD-Storage-Windows-10-Google-Classroom-Compatible/223381882");
 
         // Initialize all TextViews and Buttons
         itemNameTextView = findViewById(R.id.ItemNameTextView);
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // initialize UI, but check if there is a saved instanced state first
         if(savedInstanceState != null) {
             // restore state
+            updateUI();
         } else {
             updateUI();
         }
@@ -88,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void visitItemOnlineButtonClicked(View view){
         Log.d("Main", "visitItemOnlineButtonClicked()-------------- ");
+
+        Uri uri = Uri.parse(item.getUrl());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
 
