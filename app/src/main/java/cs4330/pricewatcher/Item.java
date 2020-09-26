@@ -7,6 +7,7 @@ public class Item {
     private String name;
     private double currentPrice;
     private double initialPrice;
+    // will add date, still thinking on how to implement
 
     public Item(){
         this.url = "NoUrl";
