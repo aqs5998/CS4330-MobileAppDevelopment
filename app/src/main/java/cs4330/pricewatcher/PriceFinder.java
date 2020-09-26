@@ -1,5 +1,7 @@
 package cs4330.pricewatcher;
 
+import android.util.Log;
+
 public class PriceFinder {
 
     public PriceFinder(){
@@ -12,6 +14,7 @@ public class PriceFinder {
      * @return The price of the given item, currently math.random()*10 is used which returns a random double from 0 to 10.
      */
     public double findPrice(String url){
+        Log.d("PriceFinder", "findPrice("+url+")-------------- ");
         return Math.random()*10;
     }
 }

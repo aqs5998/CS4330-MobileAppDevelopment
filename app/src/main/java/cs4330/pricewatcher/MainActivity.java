@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private PriceFinder priceFinder;
+    private Item item;
     private TextView itemNameTextView;
     private TextView itemInitialPriceTextView;
     private TextView itemCurrentPriceTextView;
@@ -23,8 +24,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // This current pricewatcher instance only has one method and is for placeholder purposes
+        // This current PriceFinder instance only has one method and is for placeholder purposes
         priceFinder = new PriceFinder();
+        // Initialize an item instance
+        item = new Item();
+        item.setName("Test Item");
+        item.setCurrentPrice(0.0);
+        item.setInitialPrice(0.0);
+        item.setUrl("https://testurl.com/testItem");
 
         // Initialize all TextViews and Buttons
         itemNameTextView = findViewById(R.id.ItemNameTextView);
@@ -54,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void itemUpdatePriceButtonClicked(View view){
         Log.d("Main", "itemUpdatePriceButtonClicked()-------------- ");
+
+        // call the PriceFinder with the item url, then update the item price.
+        item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
+
     }
 
     public void visitItemOnlineButtonClicked(View view){
