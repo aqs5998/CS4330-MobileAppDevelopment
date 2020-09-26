@@ -42,22 +42,22 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="76dp"
         android:text="Item % Change:"
-        app:layout_constraintBottom_toTopOf="@+id/UpdatePriceButton"
+        app:layout_constraintBottom_toTopOf="@+id/ItemUpdatePriceButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/UpdatePriceButton"
+        android:id="@+id/ItemUpdatePriceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:text="Update Price"
-        app:layout_constraintBottom_toTopOf="@+id/ViewItemOnlineButton"
+        app:layout_constraintBottom_toTopOf="@+id/VisitItemOnlineButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/ViewItemOnlineButton"
+        android:id="@+id/VisitItemOnlineButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="88dp"
