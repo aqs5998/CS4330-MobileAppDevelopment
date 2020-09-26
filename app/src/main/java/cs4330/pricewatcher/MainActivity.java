@@ -46,6 +46,28 @@ public class MainActivity extends AppCompatActivity {
         itemUpdatePriceButton.setOnClickListener(this::itemUpdatePriceButtonClicked);
         visitItemOnlineButton.setOnClickListener(this::visitItemOnlineButtonClicked);
 
+        // initialize UI, but check if there is a saved instanced state first
+        if(savedInstanceState != null) {
+            // restore state
+        } else {
+            // start with initial values
+            itemNameTextView.setText("Item Name:" + item.getName());
+            itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
+            itemCurrentPriceTextView.setText("Item Current Price:" + item.getCurrentPrice());
+            itemPercentChangeTextView.setText("Item Percent Chante:" + item.getPercentChange() + "%");
+        }
+
+
+    }
+
+    /**
+     * This method updated the UI with the new item values
+     */
+    public void updateUI(){
+        itemNameTextView.setText("Item Name:" + item.getName());
+        itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
+        itemCurrentPriceTextView.setText("Item Current Price:" + item.getCurrentPrice());
+        itemPercentChangeTextView.setText("Item Percent Chante:" + item.getPercentChange() + "%");
     }
 
     @Override
@@ -64,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         // call the PriceFinder with the item url, then update the item price.
         item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
+        updateUI();
 
     }
 
