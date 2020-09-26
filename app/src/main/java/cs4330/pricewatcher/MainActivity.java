@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PriceWatcher pricewatcher;
+    private PriceFinder priceFinder;
     private TextView itemNameTextView;
     private TextView itemInitialPriceTextView;
     private TextView itemCurrentPriceTextView;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // This current pricewatcher instance only has one method and is for placeholder purposes
-        pricewatcher = new PriceWatcher();
+        priceFinder = new PriceFinder();
 
         // Initialize all TextViews and Buttons
         itemNameTextView = findViewById(R.id.ItemNameTextView);

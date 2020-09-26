@@ -1,8 +1,8 @@
 package cs4330.pricewatcher;
 
-public class PriceWatcher {
+public class PriceFinder {
 
-    public PriceWatcher(){
+    public PriceFinder(){
 
     }
 
