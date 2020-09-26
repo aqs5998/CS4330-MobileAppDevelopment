@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         // Initialize an item instance
         item = new Item();
         item.setName("Test Item");
-        item.setCurrentPrice(0.0);
-        item.setInitialPrice(0.0);
+        item.setInitialPrice(5.0);
+        item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
         item.setUrl("https://testurl.com/testItem");
 
         // Initialize all TextViews and Buttons
@@ -50,11 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             // restore state
         } else {
-            // start with initial values
-            itemNameTextView.setText("Item Name:" + item.getName());
-            itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
-            itemCurrentPriceTextView.setText("Item Current Price:" + item.getCurrentPrice());
-            itemPercentChangeTextView.setText("Item Percent Chante:" + item.getPercentChange() + "%");
+            updateUI();
         }
 
 
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         itemNameTextView.setText("Item Name:" + item.getName());
         itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
         itemCurrentPriceTextView.setText("Item Current Price:" + item.getCurrentPrice());
-        itemPercentChangeTextView.setText("Item Percent Chante:" + item.getPercentChange() + "%");
+        itemPercentChangeTextView.setText("Item Percent Change:" + item.getPercentChange() + "%");
     }
 
     @Override

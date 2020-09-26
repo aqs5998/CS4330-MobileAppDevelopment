@@ -1,5 +1,7 @@
 package cs4330.pricewatcher;
 
+import android.util.Log;
+
 public class Item {
     private String url;
     private String name;
@@ -14,10 +16,13 @@ public class Item {
     }
 
     /**
-     *
      * @return Returns the currentPrice over the initial price, restricted up to 2 decimals
      */
-    public double getPercentChange(){ return Math.round((this.currentPrice/this.initialPrice)-1)*100; }
+    public double getPercentChange(){
+        Log.d("Item", "Percent change is now: "+Math.round((this.currentPrice/this.initialPrice)));
+        return Math.round((this.currentPrice/this.initialPrice)*100) - 100;
+
+    }
 
     public void setUrl(String url) { this.url = url; }
 

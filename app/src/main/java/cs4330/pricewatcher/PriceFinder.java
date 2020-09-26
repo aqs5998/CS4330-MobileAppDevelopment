@@ -15,6 +15,6 @@ public class PriceFinder {
      */
     public double findPrice(String url){
         Log.d("PriceFinder", "findPrice("+url+")-------------- ");
-        return Math.random()*10;
+        return (Math.round(Math.random()*1000))/10;
     }
 }
