@@ -49,12 +49,7 @@ public class MainActivity extends AppCompatActivity {
         visitItemOnlineButton.setOnClickListener(this::visitItemOnlineButtonClicked);
 
         // initialize UI, but check if there is a saved instanced state first
-        if(savedInstanceState != null) {
-            // restore state
-            updateUI();
-        } else {
-            updateUI();
-        }
+        updateUI();
 
 
     }
