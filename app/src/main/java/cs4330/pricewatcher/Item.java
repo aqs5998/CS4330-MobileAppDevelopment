@@ -3,6 +3,8 @@ package cs4330.pricewatcher;
 import android.util.Log;
 
 public class Item {
+    /** Unique id of this item. */
+    private int id;
     private String url;
     private String name;
     private double currentPrice;
@@ -14,6 +16,24 @@ public class Item {
         this.name = "NoName";
         this.currentPrice = -1.0;
         this.initialPrice = -1.0;
+    }
+
+    public Item(String name, String url){
+        this.name = name;
+        this.url = url;
+
+        // Hard coded for now
+        this.currentPrice = 3;
+        this.initialPrice = 2;
+
+    }
+
+    public Item(int id, double initialPrice, double currentPrice, String name, String url){
+        this.id = id;
+        this.name = name;
+        this.url = url;
+        this.currentPrice = currentPrice;
+        this.initialPrice = initialPrice;
     }
 
     /**
@@ -32,6 +52,13 @@ public class Item {
 
     public void setInitialPrice(double initialPrice) { this.initialPrice = initialPrice; }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int id() {
+        return this.id;
+    }
+
     public String getUrl() { return url; }
 
     public String getName() { return name; }
@@ -39,5 +66,6 @@ public class Item {
     public double getCurrentPrice() { return currentPrice; }
 
     public double getInitialPrice() { return initialPrice; }
+
 
 }

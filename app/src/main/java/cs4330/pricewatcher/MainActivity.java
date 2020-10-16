@@ -8,49 +8,47 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private PriceFinder priceFinder;
-    private Item item;
-    private TextView itemNameTextView;
-    private TextView itemInitialPriceTextView;
-    private TextView itemCurrentPriceTextView;
-    private TextView itemPercentChangeTextView;
-    private Button itemUpdatePriceButton;
-    private Button visitItemOnlineButton;
+    private EditText itemName;
+    private EditText itemUrl;
+    private Button addButton;
+    private Button removeAllButton;
+    private ListView listView;
+    private ItemListedAdapter itemListedAdapter;
+    private ItemDatabaseHelper dbTool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("MainActiviy", "onCreate()-------------------");
 
         // This current PriceFinder instance only has one method and is for placeholder purposes
         priceFinder = new PriceFinder();
-        // Initialize an item instance
-        item = new Item();
-        item.setName("Test Item");
-        item.setInitialPrice(5.0);
-        item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
-        item.setUrl("https://www.walmart.com/ip/Asus-VivoBook-14-FHD-Thin-and-Light-Laptop-AMD-Ryzen-5-3500U-Processor-8GB-RAM-256GB-SSD-Storage-Windows-10-Google-Classroom-Compatible/223381882");
 
-        // Initialize all TextViews and Buttons
-        itemNameTextView = findViewById(R.id.ItemNameTextView);
-        itemInitialPriceTextView = findViewById(R.id.ItemInitialPriceTextView);
-        itemCurrentPriceTextView = findViewById(R.id.ItemCurrentPriceTextView);
-        itemPercentChangeTextView = findViewById(R.id.ItemPercentChangeTextView);
-        itemUpdatePriceButton = findViewById(R.id.ItemUpdatePriceButton);
-        visitItemOnlineButton = findViewById(R.id.VisitItemOnlineButton);
+        itemName = findViewById(R.id.itemName);
+        itemUrl =  findViewById(R.id.itemUrl);
+        addButton = findViewById(R.id.addButton);
+        removeAllButton = findViewById(R.id.removeButton);
+        listView = findViewById(R.id.listView);
+        dbTool = new ItemDatabaseHelper(getApplicationContext());
+
+        itemListedAdapter = new ItemListedAdapter(getApplicationContext(), R.layout.item_detailed, dbTool.allItems());
+        listView.setAdapter(itemListedAdapter);
 
 
-        // Add on click listeners
-        itemUpdatePriceButton.setOnClickListener(this::itemUpdatePriceButtonClicked);
-        visitItemOnlineButton.setOnClickListener(this::visitItemOnlineButtonClicked);
-
+        addButton.setOnClickListener(this::addButtonClicked);
+        removeAllButton.setOnClickListener(this::removeAllClicked);
         // initialize UI, but check if there is a saved instanced state first
         updateUI();
-
 
     }
 
@@ -58,10 +56,39 @@ public class MainActivity extends AppCompatActivity {
      * This method updated the UI with the new item values
      */
     public void updateUI(){
-        itemNameTextView.setText("Item Name:" + item.getName());
-        itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
-        itemCurrentPriceTextView.setText("Item Current Price:" + item.getCurrentPrice());
-        itemPercentChangeTextView.setText("Item Percent Change:" + item.getPercentChange() + "%");
+        itemListedAdapter = new ItemListedAdapter(getApplicationContext(), R.layout.item_detailed, dbTool.allItems());
+        listView.setAdapter(itemListedAdapter);
+    }
+
+    public void addButtonClicked(View view){
+        Log.d("Main", "addButtonClicked()........");
+
+        // add item, then clear textedit
+        String name = itemName.getText().toString();
+        String url = itemUrl.getText().toString();
+        // Do nothing if either are blank
+        if(name.equals("") || url.equals("")){ return; }
+        itemName.setText("");
+        itemUrl.setText("");
+
+        Item todoItem = new Item(name, url);
+
+        Log.d("addButtonClicked()", "Adding new item " + todoItem.getName());
+        dbTool.addItem(todoItem);
+        Log.d("addButtonClicked()", "Printing all items");
+        List<Item> list = dbTool.allItems();
+        for(int i=0; i<list.size(); i++){
+            Log.d("for loop +++++++++++", list.get(i).getName());
+        }
+        updateUI();
+    }
+
+    public void removeAllClicked(View view){
+        Log.d("Main", "removeAllClicked()........");
+
+        dbTool.deleteAll();
+
+        updateUI();
     }
 
     @Override
@@ -73,23 +100,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d("Main", "OnResume()-------------- ");
-    }
-
-    public void itemUpdatePriceButtonClicked(View view){
-        Log.d("Main", "itemUpdatePriceButtonClicked()-------------- ");
-
-        // call the PriceFinder with the item url, then update the item price.
-        item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
-        updateUI();
-
-    }
-
-    public void visitItemOnlineButtonClicked(View view){
-        Log.d("Main", "visitItemOnlineButtonClicked()-------------- ");
-
-        Uri uri = Uri.parse(item.getUrl());
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
     }
 
 
