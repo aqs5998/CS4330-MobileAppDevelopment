@@ -77,10 +77,10 @@ public class ItemListedAdapter extends ArrayAdapter<Item> {
                  */
                 if(itemName == null || itemPrice == null){
                     intent.putExtra("itemName", "test");
-                    intent.putExtra("itemPrice", "price goes here");
+                    intent.putExtra("itemUrl", "url goes here");
                 } else {
                     intent.putExtra("itemName", itemName.getText());
-                    intent.putExtra("itemPrice", itemPrice.getText());
+                    intent.putExtra("itemUrl", itemPrice.getText());
                 }
 
                 context.startActivity(intent);

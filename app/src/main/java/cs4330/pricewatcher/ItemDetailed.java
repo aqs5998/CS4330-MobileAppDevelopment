@@ -94,6 +94,10 @@ public class ItemDetailed extends AppCompatActivity {
     public void visitItemOnlineButtonClicked(View view){
         Log.d("ItemDetailed", "visitItemOnlineButtonClicked()-------------- ");
 
+        /**
+         * FIXME
+         * This crashes too >:p
+         */
         Uri uri = Uri.parse(item.getUrl());
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
