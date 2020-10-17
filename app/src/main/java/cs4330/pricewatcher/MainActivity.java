@@ -7,10 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText itemUrl;
     private Button addButton;
     private Button removeAllButton;
+    private Button removeItemButton;
     private ListView listView;
     private ItemListedAdapter itemListedAdapter;
     private ItemDatabaseHelper dbTool;
@@ -38,15 +41,20 @@ public class MainActivity extends AppCompatActivity {
         itemUrl =  findViewById(R.id.itemUrl);
         addButton = findViewById(R.id.addButton);
         removeAllButton = findViewById(R.id.removeButton);
+        removeItemButton = findViewById(R.id.removeItemButton);
         listView = findViewById(R.id.listView);
         dbTool = new ItemDatabaseHelper(getApplicationContext());
 
-        itemListedAdapter = new ItemListedAdapter(getApplicationContext(), R.layout.item_detailed, dbTool.allItems());
+        itemListedAdapter = new ItemListedAdapter(getApplicationContext(), R.layout.item_detailed, dbTool.allItems(), this);
         listView.setAdapter(itemListedAdapter);
-
 
         addButton.setOnClickListener(this::addButtonClicked);
         removeAllButton.setOnClickListener(this::removeAllClicked);
+
+        //System.out.println(removeItemButton + " REMOVE ITEM BUTTON");
+        if (removeItemButton != null) { removeItemButton.setOnClickListener(this::removeClicked); }
+
+
         // initialize UI, but check if there is a saved instanced state first
         updateUI();
 
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
      * This method updated the UI with the new item values
      */
     public void updateUI(){
-        itemListedAdapter = new ItemListedAdapter(getApplicationContext(), R.layout.item_detailed, dbTool.allItems());
+        itemListedAdapter = new ItemListedAdapter(getApplicationContext(), R.layout.item_detailed, dbTool.allItems(), this);
         listView.setAdapter(itemListedAdapter);
     }
 
@@ -70,6 +78,17 @@ public class MainActivity extends AppCompatActivity {
         if(name.equals("") || url.equals("")){ return; }
         itemName.setText("");
         itemUrl.setText("");
+
+        //Used to check to see if URL is valid
+        Uri uri = Uri.parse(url);
+
+        //Check to see if URL is valid
+        if (URLUtil.isValidUrl(String.valueOf(uri)) == false) {
+            System.out.println("THIS IS NOT VALID URL");
+            Toast toast = Toast.makeText(getApplicationContext(), "invalid URL!", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
 
         Item todoItem = new Item(name, url);
 
@@ -87,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Main", "removeAllClicked()........");
 
         dbTool.deleteAll();
+
+        updateUI();
+    }
+
+    public void removeClicked(View view){
+        Log.d("Main", "removeClicked()........");
 
         updateUI();
     }

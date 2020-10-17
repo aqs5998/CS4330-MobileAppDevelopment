@@ -19,6 +19,7 @@ public class ItemDetailed extends AppCompatActivity {
     private TextView itemInitialPriceTextView;
     private TextView itemCurrentPriceTextView;
     private TextView itemPercentChangeTextView;
+    private TextView itemUrlTextView;
     private Button itemUpdatePriceButton;
     private Button visitItemOnlineButton;
 
@@ -44,6 +45,7 @@ public class ItemDetailed extends AppCompatActivity {
 
         // Initialize all TextViews and Buttons
         itemNameTextView = findViewById(R.id.ItemNameTextView);
+        itemUrlTextView = findViewById(R.id.ItemUrl);
         itemInitialPriceTextView = findViewById(R.id.ItemInitialPriceTextView);
         itemCurrentPriceTextView = findViewById(R.id.ItemCurrentPriceTextView);
         itemPercentChangeTextView = findViewById(R.id.ItemPercentChangeTextView);
@@ -65,7 +67,8 @@ public class ItemDetailed extends AppCompatActivity {
      * This method updated the UI with the new item values
      */
     public void updateUI(){
-        itemNameTextView.setText("Item Name:" + item.getName());
+        itemNameTextView.setText("Item Name: " + item.getName());
+        itemUrlTextView.setText("Item URL: " + item.getUrl());
         itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
         itemCurrentPriceTextView.setText("Item Current Price:" + item.getCurrentPrice());
         itemPercentChangeTextView.setText("Item Percent Change:" + item.getPercentChange() + "%");

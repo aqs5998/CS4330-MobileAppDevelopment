@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ItemDetailed">
 
+
+    <TextView
+        android:id="@+id/ItemUrl"
+        android:layout_width="129dp"
+        android:layout_height="24dp"
+        android:text="Item Name: URL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.223"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/ItemNameTextView"
         android:layout_width="wrap_content"

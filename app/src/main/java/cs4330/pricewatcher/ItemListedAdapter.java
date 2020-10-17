@@ -18,14 +18,22 @@ import java.util.List;
 import cs4330.pricewatcher.Item;
 import cs4330.pricewatcher.R;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 /** Provide views for an AdapterView by return ing a view
  * for each ToDoItem contained in a list. */
 public class ItemListedAdapter extends ArrayAdapter<Item> {
-    private Context context;
 
-    public ItemListedAdapter(Context context, int resourceId, List<Item> items) {
+    private Context context;
+    private ItemDatabaseHelper dbTool;
+    private  MainActivity mainActivity;
+
+    public ItemListedAdapter(Context context, int resourceId, List<Item> items, MainActivity mainActivity) {
         super(context, resourceId, items);
         this.context = context;
+        this.mainActivity = mainActivity;
+
+        dbTool = new ItemDatabaseHelper(context.getApplicationContext());
     }
 
     public interface ItemClickListener {
@@ -57,6 +65,9 @@ public class ItemListedAdapter extends ArrayAdapter<Item> {
             Button viewItemButton = convertView.findViewById(R.id.viewItemButton);
             View finalConvertView = convertView;
             View finalConvertView1 = convertView;
+
+            Item current = getItem(position);
+
             viewItemButton.setOnClickListener(view -> {
                 /**
                  * Create a new intent and change the current view to item detailed
@@ -64,27 +75,34 @@ public class ItemListedAdapter extends ArrayAdapter<Item> {
                 Log.d("getView()","event listener for iteem");
 
                 Intent intent = new Intent(this.getContext(), ItemDetailed.class);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+
                 Log.d("getView()","setting item name ");
                 EditText itemName = (EditText) finalConvertView1.findViewById(R.id.itemName);
                 Log.d("getView()","setting item price");
                 EditText itemPrice = (EditText) finalConvertView1.findViewById(R.id.itemUrl);
 
                 Log.d("getView()", "putting extras");
-                /**
-                 * FIXME
-                 * For some reason itemName and itemPrice are being set to null :(
-                 * Probably has something to do with convert view >:o
-                 */
-                if(itemName == null || itemPrice == null){
-                    intent.putExtra("itemName", "test");
-                    intent.putExtra("itemUrl", "url goes here");
-                } else {
-                    intent.putExtra("itemName", itemName.getText());
-                    intent.putExtra("itemUrl", itemPrice.getText());
-                }
+
+                intent.putExtra("itemName", current.getName());
+                intent.putExtra("itemUrl", current.getUrl());
+
 
                 context.startActivity(intent);
             });
+
+            Button removeItemButton = convertView.findViewById(R.id.removeItemButton);
+
+            removeItemButton.setOnClickListener(view -> {
+                /**
+                 * Remove item
+                 */
+
+                dbTool.delete(current.id());
+                mainActivity.updateUI();
+
+            });
+
         }
 
         Item current = getItem(position);
