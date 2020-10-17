@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,6 +22,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private PriceFinder priceFinder;
+    private DialogFragment dialogFragment;
     private EditText itemName;
     private EditText itemUrl;
     private Button addButton;
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         // This current PriceFinder instance only has one method and is for placeholder purposes
         priceFinder = new PriceFinder();
+        dialogFragment = new DialogFragment();
 
         itemName = findViewById(R.id.itemName);
         itemUrl =  findViewById(R.id.itemUrl);
@@ -100,6 +105,51 @@ public class MainActivity extends AppCompatActivity {
             Log.d("for loop +++++++++++", list.get(i).getName());
         }
         updateUI();
+    }
+
+    /**
+     * Populates the toolbar menu
+     *
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menu.add(1, 1, 1, "About"); // groupId, itemId, order
+        menu.add(1, 2, 2, "Quit");
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+
+    /**
+     * Shows about page and exits
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()){
+            case 1:
+                aboutMessage();
+                return true;
+            case 2:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     *  Gets about message
+     */
+    public void aboutMessage() {
+        dialogFragment.show(getSupportFragmentManager(), "About Message");
     }
 
     public void removeAllClicked(View view){

@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ public class ItemDetailed extends AppCompatActivity {
     private TextView itemUrlTextView;
     private Button itemUpdatePriceButton;
     private Button visitItemOnlineButton;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,40 @@ public class ItemDetailed extends AppCompatActivity {
         // initialize UI, but check if there is a saved instanced state first
         updateUI();
 
+        webView = (WebView) findViewById(R.id.webview);
+        webView.setWebViewClient(new MyBrowser());
+        webView.loadUrl(item.getUrl());
+
+        webView.setWebViewClient(new MyBrowser() {
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //hide loading image
+                //findViewById(R.id.imageLoading1).setVisibility(View.GONE);
+                //show webview
+                findViewById(R.id.webview).setVisibility(View.VISIBLE);
+            }
+
+
+        });
 
     }
+
+    private class MyBrowser extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.equals("http://wingcrony.com/?actie=donate")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
+            else {
+                view.loadUrl(url);
+                return true;
+            }
+        }
+    }
+
 
     /**
      * This method updated the UI with the new item values
