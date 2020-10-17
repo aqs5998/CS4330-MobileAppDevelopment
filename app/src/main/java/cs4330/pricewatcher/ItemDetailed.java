@@ -14,6 +14,7 @@ public class ItemDetailed extends AppCompatActivity {
 
     private PriceFinder priceFinder;
     private Item item;
+    private Intent intent;
     private TextView itemNameTextView;
     private TextView itemInitialPriceTextView;
     private TextView itemCurrentPriceTextView;
@@ -29,11 +30,17 @@ public class ItemDetailed extends AppCompatActivity {
         // This current PriceFinder instance only has one method and is for placeholder purposes
         priceFinder = new PriceFinder();
         // Initialize an item instance
-        item = new Item();
-        item.setName("Test Item");
+
+        intent = getIntent();
+        String itemName = intent.getStringExtra("itemName");
+        String itemUrl = intent.getStringExtra("itemUrl");
+        item = new Item(itemName, itemUrl);
+        /**
+         * FIXME
+         * Hardcoded for now
+         */
         item.setInitialPrice(5.0);
         item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
-        item.setUrl("https://www.walmart.com/ip/Asus-VivoBook-14-FHD-Thin-and-Light-Laptop-AMD-Ryzen-5-3500U-Processor-8GB-RAM-256GB-SSD-Storage-Windows-10-Google-Classroom-Compatible/223381882");
 
         // Initialize all TextViews and Buttons
         itemNameTextView = findViewById(R.id.ItemNameTextView);
