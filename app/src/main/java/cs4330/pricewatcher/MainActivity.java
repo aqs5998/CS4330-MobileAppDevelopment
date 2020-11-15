@@ -59,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
         //System.out.println(removeItemButton + " REMOVE ITEM BUTTON");
         if (removeItemButton != null) { removeItemButton.setOnClickListener(this::removeClicked); }
 
-
+        /**
+         * HW3.R3)
+         * TODO
+         * Check wifi status, call method
+         */
         // initialize UI, but check if there is a saved instanced state first
         updateUI();
 
@@ -162,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void removeClicked(View view){
         Log.d("Main", "removeClicked()........");
-
         updateUI();
     }
 
