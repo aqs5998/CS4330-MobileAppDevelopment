@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
         List<Item> list = dbTool.allItems();
         for(int i=0; i<list.size(); i++){
             Log.d("for loop +++++++++++", list.get(i).getName());
+            Log.d("for loop +++++++++++", Double.toString(list.get(i).getInitialPrice()));
+            Log.d("for loop +++++++++++", Double.toString(list.get(i).getCurrentPrice()));
+            Log.d("for loop +++++++++++", list.get(i).getUrl());
+
         }
         updateUI();
     }
