@@ -10,7 +10,10 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import static java.lang.Thread.sleep;
 
 public class ItemDetailed extends AppCompatActivity {
 
@@ -27,6 +30,8 @@ public class ItemDetailed extends AppCompatActivity {
     private WebView webView;
     private ItemDatabaseHelper dbTool;
 
+    private ProgressBar simpleProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +39,6 @@ public class ItemDetailed extends AppCompatActivity {
         Log.d("ItemDetailed", "onCreate()-------------------");
         // This current PriceFinder instance only has one method and is for placeholder purposes
         priceFinder = new PriceFinder();
-        // Initialize an item instance
 
         dbTool = new ItemDatabaseHelper(getApplicationContext());
 
@@ -56,6 +60,18 @@ public class ItemDetailed extends AppCompatActivity {
         visitItemOnlineButton = findViewById(R.id.VisitItemOnlineButton);
 
 
+        int progress = 100;
+
+        simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar);
+        Button updateButton = (Button) findViewById(R.id.ItemUpdatePriceButton);
+        // perform click event on button
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // visible the progress bar
+                setProgressValue(progress);
+            }
+        });
         // Add on click listeners
         itemUpdatePriceButton.setOnClickListener(this::itemUpdatePriceButtonClicked);
         visitItemOnlineButton.setOnClickListener(this::visitItemOnlineButtonClicked);
@@ -82,6 +98,25 @@ public class ItemDetailed extends AppCompatActivity {
 
     }
 
+    private void setProgressValue(final int progress) {
+
+        // set the progress
+        simpleProgressBar.setProgress(progress);
+        // thread is used to change the progress value
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                setProgressValue(progress + 10);
+            }
+        });
+        thread.start();
+    }
+
     private class MyBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -102,6 +137,18 @@ public class ItemDetailed extends AppCompatActivity {
      * This method updated the UI with the new item values
      */
     public void updateUI(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                setProgressValue(0);
+            }
+        });
+        thread.start();
         itemNameTextView.setText("Item Name: " + item.getName());
         itemUrlTextView.setText("Item URL: " + item.getUrl());
         itemInitialPriceTextView.setText("Item Initial Price:" + item.getInitialPrice());
@@ -120,13 +167,14 @@ public class ItemDetailed extends AppCompatActivity {
         Log.d("ItemDetailed", "OnResume()-------------- ");
     }
 
-    public void itemUpdatePriceButtonClicked(View view){
+    public void itemUpdatePriceButtonClicked(View view) {
+       // simpleProgressBar.setProgress(0);
         Log.d("ItemDetailed", "itemUpdatePriceButtonClicked()-------------- ");
 
         // call the PriceFinder with the item url, then update the item price.
         item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
-        dbTool.update(item);
 
+        dbTool.update(item);
         updateUI();
 
     }
@@ -142,6 +190,5 @@ public class ItemDetailed extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
-
 
 }
