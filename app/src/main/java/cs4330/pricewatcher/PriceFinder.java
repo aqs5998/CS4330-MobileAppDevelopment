@@ -9,7 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class PriceFinder {
-    public static double amountToReturn;
+    public double amountToReturn;
+    public double dollars;
+    public double cents;
+
     public PriceFinder(){
 
     }
@@ -89,7 +92,7 @@ public class PriceFinder {
                     }
                 }
             });
-            return amountToReturn;
+            return dollars + (cents*.01);
         } catch (Exception eee) {
             Log.d("EXCEPTION", eee.toString());
             return -1.0;
@@ -142,8 +145,8 @@ public class PriceFinder {
                                 Log.d("CENTS IS ", centsAsString);
 
                                 dollarsAsString = dollarsAsString.replaceAll(", $","");
-                                Double dollars = Double.parseDouble(dollarsAsString);
-                                Double cents = Double.parseDouble(centsAsString);
+                                dollars = Double.parseDouble(dollarsAsString);
+                                cents = Double.parseDouble(centsAsString);
 
                                 amountToReturn = dollars + (cents*.01);
 
@@ -157,10 +160,15 @@ public class PriceFinder {
                     }
                 }
             });
-            return amountToReturn;
+            return dollars + (cents*.01);
         } catch (Exception eee) {
             Log.d("EXCEPTION", eee.toString());
             return -1.0;
         }
     }
+
+    public double getAmountToReturn(){
+        return this.amountToReturn;
+    }
+
 }
