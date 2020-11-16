@@ -2,19 +2,19 @@ package cs4330.pricewatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -22,6 +22,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private PriceFinder priceFinder;
+    private BdReceiver broadcastReceiver = null;
+
     private DialogFragment dialogFragment;
     private EditText itemName;
     private EditText itemUrl;
@@ -34,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        registerReceiver(broadcastReceiver, intentFilter);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("MainActiviy", "onCreate()-------------------");
@@ -60,14 +67,28 @@ public class MainActivity extends AppCompatActivity {
         if (removeItemButton != null) { removeItemButton.setOnClickListener(this::removeClicked); }
 
         /**
-         * HW3.R3)
-         * TODO
+         * (HW3.R3)
          * Check wifi status, call method
          */
+        broadcastReceiver = new BdReceiver();
         // initialize UI, but check if there is a saved instanced state first
         updateUI();
 
     }
+
+    //Method to check network status
+    public void broadcastIntent() {
+        Log.d("Main", "Checking WiFi State........");
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+
 
     /**
      * This method updated the UI with the new item values
@@ -171,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
+        broadcastIntent();
         super.onStart();
         Log.d("Main", "onStart() -------------- ");
     }
