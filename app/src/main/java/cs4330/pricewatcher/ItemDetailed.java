@@ -25,6 +25,7 @@ public class ItemDetailed extends AppCompatActivity {
     private Button itemUpdatePriceButton;
     private Button visitItemOnlineButton;
     private WebView webView;
+    private ItemDatabaseHelper dbTool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +36,15 @@ public class ItemDetailed extends AppCompatActivity {
         priceFinder = new PriceFinder();
         // Initialize an item instance
 
+        dbTool = new ItemDatabaseHelper(getApplicationContext());
+
         intent = getIntent();
         String itemName = intent.getStringExtra("itemName");
         String itemUrl = intent.getStringExtra("itemUrl");
-        item = new Item(itemName, itemUrl);
-        /**
-         * FIXME
-         * Hardcoded for now
-         */
-        item.setInitialPrice(5.0);
-        item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
+        double itemInitialPrice = intent.getDoubleExtra("itemInitial", 1.0);
+        double itemCurrentPrice = intent.getDoubleExtra("itemCurrent", 1.0);
+
+        item = new Item(itemName, itemUrl, itemInitialPrice, itemCurrentPrice);
 
         // Initialize all TextViews and Buttons
         itemNameTextView = findViewById(R.id.ItemNameTextView);
@@ -125,6 +125,8 @@ public class ItemDetailed extends AppCompatActivity {
 
         // call the PriceFinder with the item url, then update the item price.
         item.setCurrentPrice(priceFinder.findPrice(item.getUrl()));
+        dbTool.update(item);
+
         updateUI();
 
     }

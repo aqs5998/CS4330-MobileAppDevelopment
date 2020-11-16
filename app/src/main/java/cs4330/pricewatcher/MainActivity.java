@@ -119,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        double price = priceFinder.findPrice(url);
 
-        Item todoItem = new Item(name, url);
+        Item todoItem = new Item(name, url, price);
 
         Log.d("addButtonClicked()", "Adding new item " + todoItem.getName());
         dbTool.addItem(todoItem);

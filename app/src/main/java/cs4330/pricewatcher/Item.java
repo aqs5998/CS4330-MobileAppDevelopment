@@ -18,14 +18,20 @@ public class Item {
         this.initialPrice = -1.0;
     }
 
-    public Item(String name, String url){
+    public Item(String name, String url, Double price){
         this.name = name;
         this.url = url;
 
-        // Hard coded for now
-        this.currentPrice = 3;
-        this.initialPrice = 2;
+        this.currentPrice = price;
+        this.initialPrice = price;
 
+    }
+
+    public Item(String name, String url, double initial, double current){
+        this.name = name;
+        this.url = url;
+        this.currentPrice = current;
+        this.initialPrice = initial;
     }
 
     public Item(int id, double initialPrice, double currentPrice, String name, String url){

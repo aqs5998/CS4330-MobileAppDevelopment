@@ -86,7 +86,8 @@ public class ItemListedAdapter extends ArrayAdapter<Item> {
 
                 intent.putExtra("itemName", current.getName());
                 intent.putExtra("itemUrl", current.getUrl());
-
+                intent.putExtra("itemCurrent", current.getCurrentPrice());
+                intent.putExtra("itemInitial", current.getInitialPrice());
 
                 context.startActivity(intent);
             });

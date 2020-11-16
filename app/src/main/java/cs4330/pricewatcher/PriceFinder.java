@@ -77,8 +77,8 @@ public class PriceFinder {
                                 Log.d("CENTS IS ", centsAsString);
 
                                 dollarsAsString = dollarsAsString.replaceAll(", $","");
-                                Double dollars = Double.parseDouble(dollarsAsString);
-                                Double cents = Double.parseDouble(centsAsString);
+                                dollars = Double.parseDouble(dollarsAsString);
+                                cents = Double.parseDouble(centsAsString);
 
                                 amountToReturn = dollars + (cents*.01);
 
